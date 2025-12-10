@@ -1,10 +1,8 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import threading
-import time
 
 app = Flask(__name__)
-CORS(app)  # Pozwala na zapytania z innych domen (np. z frontendu)
+CORS(app)  # Pozwala na zapytania z innych domen
 
 last_message = ""
 
