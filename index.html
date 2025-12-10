@@ -1,20 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Real-Time Messages</title>
-  <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"></script>
+  <title>Proste powiadomienia</title>
 </head>
 <body>
-  <h1>Messages</h1>
-  <div id="messages"></div>
+  <h1>Aktualna wiadomość:</h1>
+  <div id="message">Brak wiadomości</div>
 
   <script>
-    const socket = io();
-    const messagesDiv = document.getElementById('messages');
+    async function fetchMessage() {
+      try {
+        const response = await fetch('/api/message');
+        const data = await response.json();
+        document.getElementById('message').textContent = data.message || 'Brak wiadomości';
+      } catch (e) {
+        console.error('Błąd pobierania wiadomości:', e);
+      }
+    }
 
-    socket.on('new_message', data => {
-      messagesDiv.textContent = data.message;
-    });
+    // Odpytywanie co 2 sekundy
+    setInterval(fetchMessage, 2000);
+    fetchMessage();
   </script>
 </body>
 </html>
