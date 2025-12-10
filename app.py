@@ -1,17 +1,21 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
+import os
 
 app = Flask(__name__)
-CORS(app)  # Pozwala na zapytania z innych domen
+CORS(app)
 
 last_message = ""
+
+@app.route('/')
+def index():
+    return send_from_directory('.', 'index.html')
 
 @app.route('/api/message', methods=['POST'])
 def receive_message():
     global last_message
     data = request.get_json()
-    message = data.get('message', '')
-    last_message = message
+    last_message = data.get('message', '')
     return jsonify({'status': 'Message received'}), 200
 
 @app.route('/api/message', methods=['GET'])
